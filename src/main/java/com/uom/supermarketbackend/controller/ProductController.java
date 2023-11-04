@@ -1,35 +1,38 @@
 package com.uom.supermarketbackend.controller;
 
+import com.uom.supermarketbackend.dto.ProductDTO;
 import com.uom.supermarketbackend.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.*;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
+
 @RestController
-@RequestMapping("/product")
-@RequiredArgsConstructor
+@RequestMapping("/api/products")
 public class ProductController {
     private final ProductService productService;
 
-    /*
-    @PostMapping("/add")
-    public ResponseEntity<String> addProduct(@RequestBody ProductDTO productDTO) {
-        productService.addProduct(productDTO);
-        return ResponseEntity.ok("Product added successfully");
+    public ProductController(ProductService productService) {
+        this.productService = productService;
+    }
+
+    @GetMapping
+    public List<ProductDTO> getAllProducts() {
+        return productService.getAllProducts();
     }
 
     @GetMapping("/{productId}")
-    public ResponseEntity<ProductDTO> getProductDetails(@PathVariable Long productId) {
-        ProductDTO productDTO = productService.getProductDetails(productId);
-        return ResponseEntity.ok(productDTO);
+    public ProductDTO getProductById(@PathVariable Long productId) {
+        return productService.getProductById(productId);
     }
 
-    @PatchMapping("/update/{productId}")
-    public ResponseEntity<String> updateProduct(
-            @PathVariable Long productId,
-            @RequestBody ProductUpdateDTO productUpdateDTO) {
-        productService.updateProduct(productId, productUpdateDTO);
-        return ResponseEntity.ok("Product information updated successfully");
+    @GetMapping("/search")
+    public List<ProductDTO> searchProducts(@RequestParam String productName) {
+        return productService.searchProducts(productName);
     }
-    */
 }
+
