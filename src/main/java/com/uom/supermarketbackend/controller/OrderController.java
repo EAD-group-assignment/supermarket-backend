@@ -1,36 +1,55 @@
 package com.uom.supermarketbackend.controller;
 
+import com.uom.supermarketbackend.dto.DeliveryDTO;
+import com.uom.supermarketbackend.dto.OrderDTO;
+import com.uom.supermarketbackend.service.DeliveryService;
 import com.uom.supermarketbackend.service.OrderService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
 
 @RestController
-@RequestMapping("/order")
-@RequiredArgsConstructor
+@RequestMapping("/orders")
 public class OrderController {
-    private final OrderService orderService;
+    @Autowired
+    private OrderService orderService;
+    @Autowired
+    private DeliveryService deliveryService;
+    @Autowired
+    public OrderController(DeliveryService deliveryService) {
+        this.deliveryService = deliveryService;
+    }
 
-    /*
     @PostMapping("/create")
-    public ResponseEntity<String> createOrder(@RequestBody OrderDTO orderDTO) {
-        Long orderId = orderService.createOrder(orderDTO);
-        return ResponseEntity.ok("Order created with ID: " + orderId);
+    public ResponseEntity<OrderDTO> createOrder(@RequestBody OrderDTO orderDTO) throws Exception {
+
+        OrderDTO createdOrder = orderService.createOrder(orderDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdOrder);
+
+    }
+    @PatchMapping("/update/{orderId}")
+    public ResponseEntity<OrderDTO> updateOrderStatus(@PathVariable Long orderId, @RequestBody OrderDTO orderDTO) {
+        OrderDTO updatedOrder = orderService.updateOrderStatus(orderId, orderDTO.getOrderStatus());
+        return ResponseEntity.ok(updatedOrder);
     }
 
-    @GetMapping("/{orderId}")
-    public ResponseEntity<OrderDTO> getOrderDetails(@PathVariable Long orderId) {
-        OrderDTO orderDTO = orderService.getOrderDetails(orderId);
-        return ResponseEntity.ok(orderDTO);
-    }
-
-    @PatchMapping("/update-status/{orderId}")
-    public ResponseEntity<String> updateOrderStatus(
+    @PostMapping("/{orderId}/create-delivery")
+    public ResponseEntity<DeliveryDTO> createDeliveryForOrder(
             @PathVariable Long orderId,
-            @RequestBody OrderStatusUpdateDTO statusUpdateDTO) {
-        orderService.updateOrderStatus(orderId, statusUpdateDTO.getStatus());
-        return ResponseEntity.ok("Order status updated successfully");
+            @RequestBody DeliveryDTO deliveryDTO) throws Exception {
+        DeliveryDTO createdDelivery = deliveryService.createDelivery(deliveryDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdDelivery);
     }
-    */
 
+
+
+
+//    @DeleteMapping("/delete/{orderId}")
+//    public ResponseEntity<Void> deleteOrder(@PathVariable Long orderId) {
+//        orderService.deleteOrder(orderId);
+//        return ResponseEntity.noContent().build();
+//    }
 }

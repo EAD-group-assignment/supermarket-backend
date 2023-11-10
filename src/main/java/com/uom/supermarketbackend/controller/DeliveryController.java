@@ -1,35 +1,46 @@
 package com.uom.supermarketbackend.controller;
 
+import com.uom.supermarketbackend.dto.DeliveryDTO;
+import com.uom.supermarketbackend.dto.DeliveryUpdateDTO;
+import com.uom.supermarketbackend.model.DeliveryPerson;
+import com.uom.supermarketbackend.service.DeliveryPersonService;
 import com.uom.supermarketbackend.service.DeliveryService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/delivery")
-@RequiredArgsConstructor
+
 public class DeliveryController {
+    private final DeliveryPersonService deliveryPersonService;
 
     private final DeliveryService deliveryService;
 
-    /*
-    @PostMapping("/accept/{deliveryId}/{deliveryPersonId}")
-    public ResponseEntity<String> acceptDelivery(
-        @PathVariable Long deliveryId,
-        @PathVariable Long deliveryPersonId
-    ) {
-        deliveryService.acceptDelivery(deliveryId, deliveryPersonId);
-        return ResponseEntity.ok("Delivery accepted successfully");
+    public DeliveryController(DeliveryPersonService deliveryPersonService, DeliveryService deliveryService) {
+        this.deliveryPersonService = deliveryPersonService;
+        this.deliveryService = deliveryService;
     }
 
-    @PatchMapping("/update-status/{deliveryId}")
-    public ResponseEntity<String> updateDeliveryStatus(
-        @PathVariable Long deliveryId,
-        @RequestBody DeliveryStatusUpdateDTO statusUpdateDTO
-    ) {
-        deliveryService.updateDeliveryStatus(deliveryId, statusUpdateDTO.getStatus());
-        return ResponseEntity.ok("Delivery status updated successfully");
-    }
-    */
 
+
+
+    //create delivery person
+    @PostMapping("/create")
+    public ResponseEntity<DeliveryPerson> saveDeliveryPerson(@RequestBody DeliveryPerson deliveryPerson) {
+        DeliveryPerson createdDeliveryPerson = deliveryPersonService.saveDeliveryPerson(deliveryPerson);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdDeliveryPerson);
+    }
+
+    //create delivery status by delivery person
+    @PutMapping("/{deliveryId}/update-status")
+    public ResponseEntity<DeliveryDTO> updateDeliveryStatus(
+            @PathVariable Long deliveryId,
+            @RequestBody DeliveryUpdateDTO deliveryUpdateDTO){
+        String newStatus = deliveryUpdateDTO.getNewStatus();
+        DeliveryDTO updatedDelivery = deliveryService.updateDeliveryStatus(deliveryId, newStatus);
+        return ResponseEntity.ok(updatedDelivery);
+
+    }
 }

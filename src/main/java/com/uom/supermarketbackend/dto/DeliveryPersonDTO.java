@@ -1,15 +1,16 @@
 package com.uom.supermarketbackend.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
+@Builder
 @AllArgsConstructor
-public class UserDTO {
+@NoArgsConstructor
+public class DeliveryPersonDTO {
     private Long id;
     private String name;
-
-    // Constructors, getters, setters
+    private String phone;
 }
