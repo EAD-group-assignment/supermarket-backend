@@ -11,9 +11,21 @@ public class Product {
     private String name;
     private double price;
     private int stockQuantity;
+    private String Description ;
 
     public int getStockQuantity() {
         return stockQuantity;
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                ", stockQuantity=" + stockQuantity +
+                ", Description='" + Description + '\'' +
+                '}';
     }
 
     public void setStockQuantity(int stockQuantity) {
@@ -36,6 +48,14 @@ public class Product {
         this.name = name;
     }
 
+    public String getDescription() {
+        return Description;
+    }
+
+    public void setDescription(String description) {
+        Description = description;
+    }
+
     public double getPrice() {
         return price;
     }
@@ -43,15 +63,5 @@ public class Product {
         this.price = price;
     }
 
-
-    @Override
-    public String toString() {
-        return "Product{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", price=" + price +
-                ", stockQuantity=" + stockQuantity +
-                '}';
-    }
 
 }

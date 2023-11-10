@@ -9,6 +9,8 @@ private Long id;
 private String name;
 private double price;
     private int stockQuantity;
+
+    private String Description ;
     public ProductDTO() {
         // Default constructor
     }
@@ -26,6 +28,7 @@ private double price;
         this.name = product.getName();
         this.price = product.getPrice();
         this.stockQuantity = product.getStockQuantity();
+        this.Description=product.getDescription();
     }
 
     public Long getId() {
@@ -50,5 +53,13 @@ private double price;
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public String getDescription() {
+        return Description;
+    }
+
+    public void setDescription(String description) {
+        Description = description;
     }
 }
