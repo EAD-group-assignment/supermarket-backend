@@ -49,4 +49,15 @@ public class CartItem {
     public void setCart(Cart cart) {
         this.cart = cart;
     }
+
+    @Override
+    public String toString() {
+        return "CartItem{" +
+                "id=" + id +
+                ", product=" + product.getName() + // Assuming product has a 'getName()' method
+                ", quantity=" + quantity +
+                // Other fields you want to include
+                '}';
+    }
+
 }

@@ -114,34 +114,32 @@ public class CartService {
 
     }
 
-    public Cart removeItemFromCart(Long userId, Long productId) {
-        // Retrieve the user
+    public List<CartItem>  removeItemFromCart(Long userId, Long productId) {
         User user = userRepository.findById(userId).orElseThrow();
 
         if (user != null) {
-            // Check if the user has a cart
             Cart cart = user.getCart();
 
             if (cart != null) {
-                // Find the cart item to remove
                 Optional<CartItem> itemToRemove = cart.getCartItems()
                         .stream()
                         .filter(item -> item.getProduct().getId().equals(productId))
                         .findFirst();
 
                 if (itemToRemove.isPresent()) {
-                    // Remove the item from the cart
-                    System.out.println(itemToRemove.get());
                     cart.getCartItems().remove(itemToRemove.get());
-                    // Update the cart and user
+                    // As a try, explicitly set the cart reference of the removed item to null
+                    itemToRemove.get().setCart(null);
                     cartRepository.save(cart);
                     userRepository.save(user);
                 }
             }
         }
 
-        return user.getCart();
+        return user.getCart().getCartItems();
     }
+
+
 
     public List<CartItem> updateCartItemQuantity(Long userId, Long productId, int newQuantity) {
         // Retrieve the user
